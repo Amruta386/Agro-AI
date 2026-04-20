@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Dashboard</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body class="dashboard-bg">
+
+<h1>🌾 AgroAI Dashboard</h1>
+
+<div class="dashboard">
+
+    <a href="{{ url_for('crop') }}">
+        <div class="card">
+            <h2>🌱 Crop Recommendation</h2>
+            <p>Predict best crop for farming</p>
+        </div>
+    </a>
+
+    <a href="{{ url_for('price') }}">
+        <div class="card">
+            <h2>📈 Market Price Prediction</h2>
+            <p>Predict future crop prices</p>
+        </div>
+    </a>
+
+</div>
+
+</body>
+</html>

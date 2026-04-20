@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Result</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+<h1>🌱 AgroAI Smart Prediction</h1>
+
+<div class="result-container">
+    <div class="result-box">
+        <h2>🌾 {{ prediction }}</h2>
+
+        <h3>🧪 Fertilizer: Urea</h3>
+        <h3>🐛 Pesticide: Imidacloprid</h3>
+        <hr>
+
+        <h3>📊 Input Details</h3>
+        <p>Nitrogen: {{ data.n }}</p>
+        <p>Phosphorus: {{ data.p }}</p>
+         <p>Potassium: {{ data.k }}</p>
+        <p>Temperature: {{ data.temp }}</p>
+         <p>Humidity: {{ data.hum }}</p>
+         <p>pH: {{ data.ph }}</p>
+         <p>Rainfall: {{ data.rain }}</p>
+</div>
+</div>
+
+</body>
+</html>

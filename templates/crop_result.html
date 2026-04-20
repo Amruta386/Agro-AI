@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Crop Result</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+<h1>🌱 AgroAI Crop Result</h1>
+
+<div class="result-container">
+
+<div class="result-box">
+
+    <h2>🌾 Predicted Crop: {{ crop }}</h2>
+
+    <br>
+
+    <a href="{{ url_for('dashboard') }}">
+        <button>🔙 Back to Dashboard</button>
+    </a>
+
+</div>
+
+</div>
+
+</body>
+</html>
