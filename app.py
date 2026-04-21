@@ -3,6 +3,7 @@ from flask import Flask, render_template, request, redirect, url_for
 import json
 import os
 import pickle
+import requests   # ✅ Added for Weather API
 
 app = Flask(__name__)
 
@@ -10,6 +11,10 @@ FILE = "users.json"
 
 # 🔥 Load ML model
 price_model = pickle.load(open("price_model.pkl", "rb"))
+
+# ✅ OpenWeather API Key
+API_KEY = "34c18588bd8a6c54e4d7c8bda9ce5713"
+
 
 # ---------------- USER FUNCTIONS ---------------- #
 
@@ -22,6 +27,24 @@ def load_users():
 def save_users(users):
     with open(FILE, "w") as f:
         json.dump(users, f)
+
+
+# ---------------- WEATHER FUNCTION ---------------- #
+
+def get_weather(city):
+    url = f"https://api.openweathermap.org/data/2.5/weather?q={city}&appid={API_KEY}&units=metric"
+    
+    response = requests.get(url)
+    data = response.json()
+
+    if response.status_code != 200:
+        return None
+
+    temperature = data["main"]["temp"]
+    humidity = data["main"]["humidity"]
+
+    return temperature, humidity
+
 
 # ---------------- AUTH ---------------- #
 
@@ -60,11 +83,13 @@ def login_check():
     else:
         return "Invalid credentials!"
 
+
 # ---------------- DASHBOARD ---------------- #
 
 @app.route("/dashboard")
 def dashboard():
     return render_template("dashboard.html")
+
 
 # ---------------- CROP ---------------- #
 
@@ -90,6 +115,51 @@ def predict_crop():
         crop = "🌱 Wheat"
 
     return render_template("crop_result.html", crop=crop)
+
+
+# ---------------- WEATHER BASED CROP PREDICTION ---------------- #
+
+@app.route("/weather_crop")
+def weather_crop():
+    return render_template("weather_crop.html")
+
+@app.route("/predict_weather_crop", methods=["POST"])
+def predict_weather_crop():
+    city = request.form["city"]
+    rain = float(request.form["rain"])
+    n = int(request.form["n"])
+    p = int(request.form["p"])
+    k = int(request.form["k"])
+    ph = float(request.form["ph"])
+
+    weather = get_weather(city)
+
+    if weather is None:
+        return render_template("weather_crop.html", error="❌ City not found! Please enter valid city name.")
+
+    temp, hum = weather
+
+    # Crop recommendation logic (same logic style)
+    if n > 50 and p > 40 and rain > 100:
+        crop = "🌾 Rice"
+    elif temp > 30:
+        crop = "🌽 Maize"
+    else:
+        crop = "🌱 Wheat"
+
+    return render_template(
+        "weather_crop_result.html",
+        city=city,
+        temp=temp,
+        hum=hum,
+        rain=rain,
+        n=n,
+        p=p,
+        k=k,
+        ph=ph,
+        crop=crop
+    )
+
 
 # ---------------- PRICE ---------------- #
 
@@ -124,11 +194,13 @@ def predict_price():
         trend=trend
     )
 
+
 # ---------------- LOGOUT ---------------- #
 
 @app.route("/logout")
 def logout():
     return redirect(url_for("login"))
+
 
 # ---------------- RUN ---------------- #
 

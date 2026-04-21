@@ -18,10 +18,24 @@
         </div>
     </a>
 
+    <a href="{{ url_for('weather_crop') }}">
+        <div class="card">
+            <h2>🌦 Weather Based Crop Prediction</h2>
+            <p>Auto fetch weather using city name</p>
+        </div>
+    </a>
+
     <a href="{{ url_for('price') }}">
         <div class="card">
             <h2>📈 Market Price Prediction</h2>
             <p>Predict future crop prices</p>
+        </div>
+    </a>
+
+    <a href="{{ url_for('logout') }}">
+        <div class="card">
+            <h2>🚪 Logout</h2>
+            <p>Exit from AgroAI account</p>
         </div>
     </a>
 

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Weather Crop Result</title>
+</head>
+<body>
+
+    <h2>✅ Weather Based Crop Prediction Result</h2>
+
+    <p><b>City:</b> {{ city }}</p>
+    <p><b>Temperature:</b> {{ temp }} °C</p>
+    <p><b>Humidity:</b> {{ hum }} %</p>
+    <p><b>Rainfall:</b> {{ rain }} mm</p>
+
+    <p><b>N:</b> {{ n }}</p>
+    <p><b>P:</b> {{ p }}</p>
+    <p><b>K:</b> {{ k }}</p>
+    <p><b>pH:</b> {{ ph }}</p>
+
+    <h2 style="color:green;">🌱 Recommended Crop: {{ crop }}</h2>
+
+    <a href="/weather_crop">Predict Again</a> |
+    <a href="/dashboard">Back to Dashboard</a>
+
+</body>
+</html>
