@@ -1,0 +1,23 @@
+<h2>Your Cart 🛒</h2>
+
+{% if cart %}
+  {% for item in cart %}
+    <p>
+      {{ item.name }} - ₹{{ item.price }} × {{ item.quantity }}
+    </p>
+  {% endfor %}
+{% else %}
+  <p>Your cart is empty</p>
+{% endif %}
+
+<br>
+
+<a href="/place_order_from_cart">
+  <button>Place Order</button>
+</a>
+
+<br><br>
+
+<a href="/crops">
+  <button>Back to Crops</button>
+</a>

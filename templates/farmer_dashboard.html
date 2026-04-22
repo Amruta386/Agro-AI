@@ -1,0 +1,13 @@
+<h2>Your Crops</h2>
+
+{% for crop in crops %}
+  <p>{{ crop.name }} - ₹{{ crop.price }}</p>
+
+  <form method="POST" action="/update_crop/{{ loop.index0 }}">
+    <input name="price" placeholder="New Price">
+    <input name="quantity" placeholder="New Quantity">
+    <button type="submit">Update</button>
+  </form>
+
+  <a href="/delete_crop/{{ loop.index0 }}">Delete</a>
+{% endfor %}
