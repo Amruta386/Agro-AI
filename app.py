@@ -4,18 +4,77 @@ import json
 import os
 import pickle
 import requests
+import webbrowser
+
+# 🔥 NEW IMPORTS
+from tensorflow.keras.models import load_model 
+import numpy as np 
+from PIL import Image
 
 app = Flask(__name__)
 
 FILE = "users.json"
 CROPS_FILE = "crops.json"
 ORDERS_FILE = "orders.json"
-CART_FILE = "cart.json"   # ✅ NEW
+CART_FILE = "cart.json"
 
-# 🔥 Load ML model
+# 🔥 Load ML models
 price_model = pickle.load(open("price_model.pkl", "rb"))
 
-# ✅ OpenWeather API Key
+fertilizers = {
+    "🌾 Rice": "Urea + DAP fertilizer",
+    "🌽 Maize": "NPK 20-20-20 fertilizer",
+    "🌱 Wheat": "Nitrogen-rich fertilizer"
+}
+
+# 🔥 Disease Model
+disease_model = load_model("plant_disease_mobilenet.h5")
+
+disease_classes = [
+    "Pepper__bell___Bacterial_spot",
+    "Pepper__bell___healthy",
+    "Potato___Early_blight",
+    "Potato___healthy",
+    "Potato___Late_blight",
+    "Tomato_Bacterial_spot",
+    "Tomato_Early_blight",
+    "Tomato_healthy",
+    "Tomato_Late_blight",
+    "Tomato_Leaf_Mold",
+    "Tomato_Septoria_leaf_spot",
+    "Tomato_Spider_mites_Two_spotted_spider_mite",
+    "Tomato__Target_Spot",
+    "Tomato__Tomato_mosaic_virus",
+    "Tomato__Tomato_YellowLeaf__Curl_Virus"
+]
+treatments = {
+    "Pepper__bell___Bacterial_spot": "Apply copper-based bactericide and remove infected leaves.",
+    "Pepper__bell___healthy": "Plant is healthy. No treatment needed.",
+
+    "Potato___Early_blight": "Use fungicide and avoid overhead watering.",
+    "Potato___Late_blight": "Apply chlorothalonil or mancozeb fungicide immediately.",
+    "Potato___healthy": "Plant is healthy. No treatment needed.",
+
+    "Tomato_Bacterial_spot": "Use copper sprays and disease-free seeds.",
+    "Tomato_Early_blight": "Apply fungicide and prune lower infected leaves.",
+    "Tomato_Late_blight": "Use fungicide and improve air circulation.",
+    "Tomato_Leaf_Mold": "Reduce humidity and apply fungicide.",
+    "Tomato_Septoria_leaf_spot": "Remove infected leaves and apply fungicide.",
+    "Tomato_Spider_mites_Two_spotted_spider_mite": "Spray neem oil or insecticidal soap.",
+    "Tomato__Target_Spot": "Apply fungicide and avoid wet foliage.",
+    "Tomato__Tomato_YellowLeaf__Curl_Virus": "Control whiteflies and remove infected plants.",
+    "Tomato__Tomato_mosaic_virus": "Remove infected plants and disinfect tools.",
+    "Tomato_healthy": "Plant is healthy. No treatment needed."
+}
+
+# ✅ Upload folder
+UPLOAD_FOLDER = "static/uploads"
+app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
+
+if not os.path.exists(UPLOAD_FOLDER):
+    os.makedirs(UPLOAD_FOLDER)
+
+# ✅ OpenWeather API
 API_KEY = "34c18588bd8a6c54e4d7c8bda9ce5713"
 
 
@@ -56,7 +115,7 @@ def save_orders(orders):
         json.dump(orders, f)
 
 
-# ---------------- CART STORAGE (NEW) ---------------- #
+# ---------------- CART STORAGE ---------------- #
 
 def load_cart():
     if not os.path.exists(CART_FILE):
@@ -148,8 +207,13 @@ def predict_crop():
     else:
         crop = "🌱 Wheat"
 
-    return render_template("crop_result.html", crop=crop)
+    fertilizer = fertilizers.get(crop, "General fertilizer")
 
+    return render_template(
+        "crop_result.html",
+        crop=crop,
+        fertilizer=fertilizer
+    )
 
 # ---------------- WEATHER CROP ---------------- #
 
@@ -182,7 +246,6 @@ def predict_weather_crop():
 
     return render_template("weather_crop_result.html",
                            city=city, temp=temp, hum=hum,
-                           rain=rain, n=n, p=p, k=k, ph=ph,
                            crop=crop)
 
 
@@ -215,132 +278,61 @@ def predict_price():
                            trend=trend)
 
 
-# ---------------- E-COMMERCE ---------------- #
+# ---------------- 🌿 PLANT DISEASE DETECTION ---------------- #
 
-@app.route("/add_crop", methods=["GET", "POST"])
-def add_crop():
-    if request.method == "POST":
-        crops = load_crops()
+@app.route("/predict_disease", methods=["POST"])
+def predict_disease():
+    file = request.files["image"]
 
-        new_crop = {
-            "name": request.form["name"],
-            "price": request.form["price"],
-            "quantity": request.form["quantity"]
-        }
+    if file.filename == "":
+        return "No file selected!"
 
-        crops.append(new_crop)
-        save_crops(crops)
+    filepath = os.path.join(app.config["UPLOAD_FOLDER"], file.filename)
+    file.save(filepath)
 
-        return redirect("/farmer_dashboard")
+    # Image preprocessing
+    img = Image.open(filepath).convert("RGB")
+    img = img.resize((128, 128))
 
-    return render_template("add_crop.html")
+    img_array = np.array(img, dtype=np.float32)
+    img_array = img_array / 255.0
+    img_array = np.expand_dims(img_array, axis=0)
 
+    # Prediction
+    prediction = disease_model.predict(img_array)
 
-@app.route("/farmer_dashboard")
-def farmer_dashboard():
-    crops = load_crops()
-    return render_template("farmer_dashboard.html", crops=crops)
+    class_index = np.argmax(prediction[0])
 
+    if class_index >= len(disease_classes):
+        return "Model output mismatch error"
 
-@app.route("/update_crop/<int:index>", methods=["POST"])
-def update_crop(index):
-    crops = load_crops()
-    crops[index]["price"] = request.form["price"]
-    crops[index]["quantity"] = request.form["quantity"]
-    save_crops(crops)
-    return redirect("/farmer_dashboard")
+    result = disease_classes[class_index]
+    display_name = result.replace("_", " ")
 
+    confidence = float(np.max(prediction[0]) * 100)
+    confidence = round(confidence, 2)
 
-@app.route("/delete_crop/<int:index>")
-def delete_crop(index):
-    crops = load_crops()
-    crops.pop(index)
-    save_crops(crops)
-    return redirect("/farmer_dashboard")
+    treatment = treatments.get(result, "No suggestion available")
 
-
-@app.route("/crops")
-def view_crops():
-    crops = load_crops()
-    return render_template("view_crop.html", crops=crops)
+    return render_template(
+        "result.html",
+        result=result,
+        display_name=display_name,
+        image=filepath,
+        confidence=confidence,
+        treatment=treatment
+    )
 
 
-# ---------------- CART SYSTEM ---------------- #
-
-@app.route("/add_to_cart/<int:index>", methods=["POST"])
-def add_to_cart(index):
-    crops = load_crops()
-    cart = load_cart()
-
-    quantity = int(request.form["quantity"])
-    crop = crops[index]
-
-    if quantity > int(crop["quantity"]):
-        return "Not enough stock!"
-
-    cart_item = {
-        "name": crop["name"],
-        "price": crop["price"],
-        "quantity": quantity
-    }
-
-    cart.append(cart_item)
-    save_cart(cart)
-
-    return redirect("/cart")
-
-
-@app.route("/cart")
-def view_cart():
-    cart = load_cart()
-    return render_template("cart.html", cart=cart)
-
-
-@app.route("/place_order_from_cart")
-def place_order_from_cart():
-    cart = load_cart()
-    orders = load_orders()
-    crops = load_crops()
-
-    total_price = 0
-
-    for item in cart:
-        total_price += int(item["price"]) * int(item["quantity"])
-
-        # Reduce stock
-        for crop in crops:
-            if crop["name"] == item["name"]:
-                crop["quantity"] = str(int(crop["quantity"]) - int(item["quantity"]))
-
-    order = {
-        "items": cart,
-        "total_price": total_price
-    }
-
-    orders.append(order)
-
-    save_orders(orders)
-    save_crops(crops)
-    save_cart([])   # clear cart
-
-    return redirect("/payment")
-
-
-# ---------------- PAYMENT ---------------- #
-
-@app.route("/payment")
-def payment():
-    return render_template("payment.html")
-
-
-# ---------------- LOGOUT ---------------- #
-
+# ---------------- RUN ---------------- #
 @app.route("/logout")
 def logout():
     return redirect(url_for("login"))
 
-
-# ---------------- RUN ---------------- #
+@app.route("/disease")
+def disease():
+    return render_template("upload.html")
 
 if __name__ == "__main__":
+    webbrowser.open("http://127.0.0.1:5000")
     app.run(debug=True)

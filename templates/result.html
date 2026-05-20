@@ -1,31 +1,63 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Result</title>
-<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-</head>
+    <title>Result</title>
+    <style>
+        body {
+            font-family: Arial;
+            text-align: center;
+            background-color: #f4f7f6;
+        }
 
+        .card {
+            background: white;
+            padding: 20px;
+            margin: 50px auto;
+            width: 420px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        img {
+            border-radius: 10px;
+            margin-top: 10px;
+        }
+
+        .healthy {
+            color: green;
+        }
+
+        .disease {
+            color: red;
+        }
+
+        a {
+            text-decoration: none;
+            font-size: 18px;
+        }
+    </style>
+</head>
 <body>
 
-<h1>🌱 AgroAI Smart Prediction</h1>
+<div class="card">
+    <h2>🌿 Disease Prediction</h2>
 
-<div class="result-container">
-    <div class="result-box">
-        <h2>🌾 {{ prediction }}</h2>
+    <img src="{{ image }}" width="250">
 
-        <h3>🧪 Fertilizer: Urea</h3>
-        <h3>🐛 Pesticide: Imidacloprid</h3>
-        <hr>
+    <h3 class="{% if 'healthy' in result.lower() %}healthy{% else %}disease{% endif %}">
+        {{ display_name }}
+    </h3>
 
-        <h3>📊 Input Details</h3>
-        <p>Nitrogen: {{ data.n }}</p>
-        <p>Phosphorus: {{ data.p }}</p>
-         <p>Potassium: {{ data.k }}</p>
-        <p>Temperature: {{ data.temp }}</p>
-         <p>Humidity: {{ data.hum }}</p>
-         <p>pH: {{ data.ph }}</p>
-         <p>Rainfall: {{ data.rain }}</p>
-</div>
+    <p><b>Confidence:</b> {{ confidence }}%</p>
+
+    <h3>Treatment Recommendation:</h3>
+    <p>
+        {{ treatment }}
+    </p>
+
+    <br><br>
+
+    <a href="/disease">⬅️ Upload Another Image</a>
 </div>
 
 </body>

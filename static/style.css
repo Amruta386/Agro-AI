@@ -1,51 +1,82 @@
-/* BODY */
+/* RESET */
 body {
-    font-family: Arial, sans-serif;
-    background: linear-gradient(to right, #56ab2f, #a8e063);
     margin: 0;
     padding: 0;
+    font-family: Arial, sans-serif;
     text-align: center;
+    background: #f4f8f4;
 }
 
-/* HEADER */
+/* HEADINGS */
 h1 {
     color: white;
     padding: 20px;
     font-size: 36px;
 }
 
-/* CENTER FORM (LOGIN / REGISTER / INPUT) */
+/* NAVBAR */
+.navbar {
+    background: linear-gradient(90deg, #1b5e20, #43a047);
+    color: white;
+    padding: 18px 35px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.navbar h1 {
+    margin: 0;
+    font-size: 30px;
+    padding: 0;
+}
+
+.logout-btn {
+    text-decoration: none;
+    color: white;
+    background: #d32f2f;
+    padding: 10px 18px;
+    border-radius: 8px;
+    font-weight: bold;
+}
+
+.logout-btn:hover {
+    background: #b71c1c;
+}
+
+/* FORM CENTER */
 .form-container {
     height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
+    padding-top: 20px;
 }
 
 /* FORM BOX */
 form {
-    background: white;
-    width: 750px;              /* 🔥 BIG WIDTH */
-    padding: 50px;             /* 🔥 BIG SPACING */
-    border-radius: 15px;
+    background: rgba(255, 255, 255, 0.95);
+    width: 750px;
+    padding: 50px;
+    border-radius: 18px;
     margin: 40px auto;
-    box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.25);
     transition: transform 0.3s;
 }
 
-/* HOVER EFFECT */
 form:hover {
     transform: scale(1.02);
 }
 
-/* INPUT FIELDS */
+/* INPUTS */
 input {
     width: 95%;
     padding: 15px;
     margin: 12px 0;
-    border-radius: 8px;
+    border-radius: 10px;
     border: 1px solid #ccc;
     font-size: 18px;
+    outline: none;
 }
 
 /* BUTTON */
@@ -55,16 +86,17 @@ button {
     padding: 16px;
     width: 100%;
     border: none;
-    border-radius: 8px;
+    border-radius: 10px;
     font-size: 20px;
     cursor: pointer;
+    transition: 0.3s;
 }
 
 button:hover {
     background: #1b5e20;
 }
 
-/* LINKS (LOGIN / REGISTER SWITCH) */
+/* LINKS */
 a {
     color: white;
     font-size: 16px;
@@ -75,101 +107,122 @@ a:hover {
     text-decoration: underline;
 }
 
-/* RESULT PAGE CONTAINER */
-.result-container {
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+/* DASHBOARD */
+.dashboard-container {
+    padding: 50px;
 }
 
-/* RESULT BOX */
-.result-box {
-    background: white;
-    padding: 100px;
-    border-radius: 25px;
-    width: 90%;
-    max-width: 1000px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-}
-
-/* RESULT TEXT */
-.result-box h2 {
-    font-size: 60px;          /* 🔥 VERY BIG */
-    color: #2e7d32;
-    margin-bottom: 25px;
-}
-
-.result-box h3 {
-    font-size: 26px;
-    color: #444;
-    margin: 15px 0;
-}
-
-/* INPUT DETAILS TEXT */
-.result-box p {
-    font-size: 18px;
-    color: #333;
-}
-/* DASHBOARD LAYOUT */
 .dashboard {
-    display: flex;
-    justify-content: center;
-    gap: 40px;
-    margin-top: 80px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 25px;
+    max-width: 1200px;
+    margin: auto;
 }
 
-/* CARD STYLE */
+.dashboard a {
+    text-decoration: none;
+}
+
+/* CARD */
 .card {
-    background: white;
-    width: 350px;
-    padding: 40px;
+    background: rgba(255, 255, 255, 0.96);
+    padding: 30px;
     border-radius: 20px;
-    box-shadow: 0 8px 25px rgba(0,0,0,0.3);
-    transition: transform 0.3s;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+    transition: all 0.3s ease;
+    color: #1f2937;
 }
 
-/* HOVER EFFECT */
 .card:hover {
-    transform: scale(1.08);
+    transform: translateY(-8px);
 }
 
-/* CARD TEXT */
 .card h2 {
     color: #2e7d32;
     font-size: 24px;
+    margin-bottom: 12px;
 }
 
 .card p {
     color: #555;
     font-size: 16px;
 }
+
+/* RESULT PAGE */
+.result-container {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px;
+}
+
+.result-box {
+    background: rgba(255,255,255,0.96);
+    padding: 70px;
+    border-radius: 25px;
+    width: 90%;
+    max-width: 950px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+}
+
+.result-box h2 {
+    font-size: 50px;
+    color: #2e7d32;
+    margin-bottom: 20px;
+}
+
+.result-box h3 {
+    font-size: 26px;
+    color: #444;
+}
+
+.result-box p {
+    font-size: 18px;
+    color: #333;
+}
+
+/* IMAGE PREVIEW */
+.preview-img {
+    width: 280px;
+    height: auto;
+    border-radius: 15px;
+    margin-top: 20px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.2);
+}
+
+/* BACKGROUNDS */
 .login-bg {
-    background-image: url("/static/images/login.png");
+    background-image: url('/static/images/login.png');
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
 }
+
 .dashboard-bg {
-    background-image: url("/static/images/dashboard.png");
+    background-image: url('/static/images/dashboard.png');
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
 }
+
 .crop-bg {
-    background-image: url("/static/images/crop.png");
+    background-image: url('/static/images/crop.png');
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
 }
+
 .register-bg {
-    background-image: url("/static/images/register.png");
+    background-image: url('/static/images/register.png');
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
 }
+
 .price-bg {
-    background-image: url("/static/images/price.png");
+    background-image: url('/static/images/price.png');
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
