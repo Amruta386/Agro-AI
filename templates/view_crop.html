@@ -1,0 +1,31 @@
+<h2>Available Crops</h2>
+
+{% for crop in crops %}
+  <div style="border:1px solid black; padding:10px; margin:10px; width:300px;">
+    
+    <h3>{{ crop.name }}</h3>
+    <p><b>Price:</b> ₹{{ crop.price }}</p>
+    <p><b>Available Quantity:</b> {{ crop.quantity }}</p>
+
+    <!-- ✅ ADD TO CART FORM -->
+    <form method="POST" action="/add_to_cart/{{ loop.index0 }}">
+      <input 
+        name="quantity" 
+        type="number" 
+        placeholder="Enter quantity" 
+        min="1"
+        required
+      >
+      <br><br>
+      <button type="submit">Add to Cart 🛒</button>
+    </form>
+
+  </div>
+{% endfor %}
+
+<br><br>
+
+<!-- ✅ GO TO CART BUTTON -->
+<a href="/cart">
+  <button>Go to Cart 🛒</button>
+</a>

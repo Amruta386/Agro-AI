@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Upload Leaf Image</title>
+</head>
+<body>
+    <h2>Upload Leaf Image 🌿</h2>
+
+    <form action="/predict_disease" method="POST" enctype="multipart/form-data">
+        <input type="file" name="image" required>
+        <button type="submit">Predict</button>
+    </form>
+
+    <br>
+    <a href="/dashboard">
+        <button>Back to Dashboard</button>
+    </a>
+</body>
+</html>

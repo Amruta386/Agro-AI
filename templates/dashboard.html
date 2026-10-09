@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>AgroAI Dashboard</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body class="dashboard-bg">
+
+    <div class="navbar">
+        <h1>🌿 AgroAI Dashboard</h1>
+        <a href="{{ url_for('logout') }}" class="logout-btn">Logout</a>
+    </div>
+
+    <div class="dashboard-container">
+        <div class="dashboard">
+
+            <a href="{{ url_for('crop') }}">
+                <div class="card">
+                    <h2>🌱 Crop Recommendation</h2>
+                    <p>Predict the best crop based on soil nutrients and climate.</p>
+                </div>
+            </a>
+
+            <a href="{{ url_for('weather_crop') }}">
+                <div class="card">
+                    <h2>🌦 Weather Crop Prediction</h2>
+                    <p>Recommend crops using live weather and rainfall data.</p>
+                </div>
+            </a>
+
+            <a href="{{ url_for('price') }}">
+                <div class="card">
+                    <h2>📈 Market Price Prediction</h2>
+                    <p>Forecast crop prices to help farmers plan sales.</p>
+                </div>
+            </a>
+
+            <a href="{{ url_for('disease') }}">
+                <div class="card">
+                    <h2>🩺 Disease Detection</h2>
+                    <p>Upload leaf images and detect plant diseases instantly.</p>
+                </div>
+            </a>
+
+            <a href="{{ url_for('marketplace') }}">
+                <div class="card">
+                    <h2>🛒 Agro Marketplace</h2>
+                    <p>Buy and sell agricultural crops directly through the platform.</p>
+                </div>
+            </a>
+
+            <a href="{{ url_for('admin_login') }}">
+                <div class="card">
+                    <h2>👨‍💼 Admin / Manager</h2>
+                    <p>Manage marketplace products, prices and stock.</p>
+                </div>
+            </a>
+
+        </div>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Orders</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f7f6;
+            margin: 0;
+            padding: 30px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #2e7d32;
+        }
+
+        .order {
+            background: white;
+            width: 80%;
+            margin: 25px auto;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+
+        .order h2 {
+            color: #2e7d32;
+        }
+
+        .item {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .total {
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 15px;
+        }
+
+        .status {
+            color: green;
+            font-weight: bold;
+        }
+
+        .back {
+            display: block;
+            width: 200px;
+            margin: 30px auto;
+            padding: 12px;
+            text-align: center;
+            background: #2e7d32;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>📦 My Orders</h1>
+
+    {% if orders %}
+
+        {% for order in orders %}
+
+        <div class="order">
+
+            <h2>Order #{{ order["order_id"] }}</h2>
+
+            <p>
+                Payment Method:
+                <strong>{{ order["payment_method"] }}</strong>
+            </p>
+
+            <p class="status">
+                Payment Successful
+            </p>
+
+            <h3>Items</h3>
+
+            {% for item in order["items"] %}
+
+            <div class="item">
+
+                <strong>{{ item["name"] }}</strong>
+
+                <br>
+
+                ₹{{ item["price"] }} × {{ item["quantity"] }}
+
+                <br>
+
+                Item Total:
+                ₹{{ item["price"]|int * item["quantity"]|int }}
+
+            </div>
+
+            {% endfor %}
+
+            <div class="total">
+                Total Amount: ₹{{ order["total_price"] }}
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+    {% else %}
+
+        <div class="order">
+            <h2>No Orders Found</h2>
+            <p>You have not placed any orders yet.</p>
+        </div>
+
+    {% endif %}
+
+    <a href="{{ url_for('view_crops') }}" class="back">
+        Continue Shopping
+    </a>
+
+    <a href="{{ url_for('dashboard') }}" class="back">
+        Back to Dashboard
+    </a>
+
+</body>
+</html>

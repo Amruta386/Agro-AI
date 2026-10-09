@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Payment Successful - AgroAI</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f1f8f3;
+            color: #333;
+        }
+
+        .navbar {
+            background: #1b5e20;
+            color: white;
+            padding: 18px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar h1 {
+            margin: 0;
+            font-size: 25px;
+        }
+
+        .dashboard-btn {
+            text-decoration: none;
+            color: white;
+            background: #388e3c;
+            padding: 10px 18px;
+            border-radius: 6px;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 800px;
+            margin: 40px auto;
+        }
+
+        .success-box {
+            background: white;
+            padding: 35px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        .success-title {
+            text-align: center;
+            color: #2e7d32;
+            margin-bottom: 30px;
+        }
+
+        .success-icon {
+            font-size: 55px;
+            text-align: center;
+        }
+
+        .order-info {
+            background: #e8f5e9;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+        }
+
+        .order-info p {
+            margin: 10px 0;
+            font-size: 17px;
+        }
+
+        .order-info strong {
+            color: #1b5e20;
+        }
+
+        .items-title {
+            color: #1b5e20;
+            margin-bottom: 15px;
+        }
+
+        .item {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px 0;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .item:last-child {
+            border-bottom: none;
+        }
+
+        .item-name {
+            font-weight: bold;
+            color: #1b5e20;
+        }
+
+        .item-details {
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .item-price {
+            font-weight: bold;
+            color: #2e7d32;
+        }
+
+        .total-box {
+            background: #e8f5e9;
+            padding: 20px;
+            margin-top: 20px;
+            border-radius: 10px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .btn {
+            text-decoration: none;
+            padding: 13px 25px;
+            border-radius: 7px;
+            font-size: 16px;
+        }
+
+        .home-btn {
+            background: #2e7d32;
+            color: white;
+        }
+
+        .cart-btn {
+            background: #757575;
+            color: white;
+        }
+
+        .home-btn:hover {
+            background: #1b5e20;
+        }
+
+        .cart-btn:hover {
+            background: #555;
+        }
+
+        @media (max-width: 600px) {
+
+            .navbar {
+                padding: 15px 20px;
+            }
+
+            .navbar h1 {
+                font-size: 20px;
+            }
+
+            .container {
+                width: 95%;
+            }
+
+            .success-box {
+                padding: 25px;
+            }
+
+            .item {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .total-box {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .buttons {
+                flex-direction: column;
+            }
+
+            .btn {
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="navbar">
+
+    <h1>🌿 AgroAI</h1>
+
+    <a href="{{ url_for('dashboard') }}" class="dashboard-btn">
+        Dashboard
+    </a>
+
+</div>
+
+
+<div class="container">
+
+    <div class="success-box">
+
+        <div class="success-icon">
+            ✅
+        </div>
+
+        <h2 class="success-title">
+            Payment Successful!
+        </h2>
+
+
+        <div class="order-info">
+
+            <p>
+                <strong>Order ID:</strong>
+                #{{ order.order_id }}
+            </p>
+
+            <p>
+                <strong>Payment Method:</strong>
+                {{ order.payment_method }}
+            </p>
+
+            <p>
+                <strong>Order Status:</strong>
+                Payment Successful
+            </p>
+
+        </div>
+
+
+        <h3 class="items-title">
+            📦 Order Details
+        </h3>
+
+
+        {% for item in order["items"] %}
+
+        <div class="item">
+
+            <div>
+
+                <div class="item-name">
+                    🌱 {{ item.name }}
+                </div>
+
+                <div class="item-details">
+                    Price: ₹{{ item.price }}
+                    <br>
+                    Quantity: {{ item.quantity }}
+                </div>
+
+            </div>
+
+            <div class="item-price">
+                ₹{{ item.price|int * item.quantity|int }}
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+
+        <div class="total-box">
+
+            <span>
+                Total Amount
+            </span>
+
+            <span>
+                ₹{{ order.total_price }}
+            </span>
+
+        </div>
+
+
+        <div class="buttons">
+
+            <a href="{{ url_for('view_crops') }}" class="btn cart-btn">
+                Continue Shopping
+            </a>
+
+            <a href="{{ url_for('dashboard') }}" class="btn home-btn">
+                Go to Dashboard
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>

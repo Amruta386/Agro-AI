@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Order Summary - AgroAI</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f1f8f3;
+            color: #333;
+        }
+
+        .navbar {
+            background: #1b5e20;
+            color: white;
+            padding: 18px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar h1 {
+            margin: 0;
+            font-size: 25px;
+        }
+
+        .back-btn {
+            text-decoration: none;
+            color: white;
+            background: #388e3c;
+            padding: 10px 18px;
+            border-radius: 6px;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 900px;
+            margin: 40px auto;
+        }
+
+        .title {
+            text-align: center;
+            color: #1b5e20;
+            margin-bottom: 30px;
+        }
+
+        .order-box {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        .order-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #ddd;
+            padding: 20px 0;
+        }
+
+        .order-item:last-child {
+            border-bottom: none;
+        }
+
+        .crop-name {
+            font-size: 20px;
+            font-weight: bold;
+            color: #1b5e20;
+        }
+
+        .details {
+            margin-top: 8px;
+            color: #666;
+        }
+
+        .item-total {
+            font-size: 18px;
+            font-weight: bold;
+            color: #2e7d32;
+        }
+
+        .total-box {
+            background: #e8f5e9;
+            border-radius: 10px;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 25px;
+        }
+
+        .total-label {
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .total-price {
+            font-size: 25px;
+            font-weight: bold;
+            color: #1b5e20;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .btn {
+            padding: 13px 25px;
+            border: none;
+            border-radius: 7px;
+            font-size: 16px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .back {
+            background: #757575;
+            color: white;
+        }
+
+        .payment {
+            background: #2e7d32;
+            color: white;
+        }
+
+        .payment:hover {
+            background: #1b5e20;
+        }
+
+        .back:hover {
+            background: #555;
+        }
+
+        .empty {
+            text-align: center;
+            padding: 50px;
+            background: white;
+            border-radius: 12px;
+        }
+
+        @media (max-width: 600px) {
+            .navbar {
+                padding: 15px 20px;
+            }
+
+            .navbar h1 {
+                font-size: 20px;
+            }
+
+            .container {
+                width: 95%;
+            }
+
+            .order-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+
+            .total-box {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .buttons {
+                flex-direction: column;
+            }
+
+            .btn {
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="navbar">
+        <h1>🌿 AgroAI</h1>
+
+        <a href="{{ url_for('dashboard') }}" class="back-btn">
+            Dashboard
+        </a>
+    </div>
+
+    <div class="container">
+
+        <h2 class="title">📦 Order Summary</h2>
+
+        {% if cart %}
+
+            <div class="order-box">
+
+                {% for item in cart %}
+
+                    <div class="order-item">
+
+                        <div>
+                            <div class="crop-name">
+                                🌱 {{ item.name }}
+                            </div>
+
+                            <div class="details">
+                                Price: ₹{{ item.price }}
+                                <br>
+                                Quantity: {{ item.quantity }}
+                            </div>
+                        </div>
+
+                        <div class="item-total">
+                            ₹{{ item.price|int * item.quantity|int }}
+                        </div>
+
+                    </div>
+
+                {% endfor %}
+
+                <div class="total-box">
+
+                    <div class="total-label">
+                        Grand Total
+                    </div>
+
+                    <div class="total-price">
+                        ₹{{ total_price }}
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="buttons">
+
+                <a href="{{ url_for('view_cart') }}" class="btn back">
+                    ← Back to Cart
+                </a>
+
+                <a href="{{ url_for('payment') }}" class="btn payment">
+                    Proceed to Payment →
+                </a>
+
+            </div>
+
+        {% else %}
+
+            <div class="empty">
+
+                <h2>Your cart is empty 🛒</h2>
+
+                <p>Please add some crops before placing an order.</p>
+
+                <br>
+
+                <a href="{{ url_for('view_crops') }}" class="btn payment">
+                    Browse Crops
+                </a>
+
+            </div>
+
+        {% endif %}
+
+    </div>
+
+</body>
+</html>

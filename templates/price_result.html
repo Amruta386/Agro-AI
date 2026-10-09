@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Price Result</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+<h1>📊 Predicted Market Price</h1>
+
+<div class="result-container">
+
+<div class="result-box">
+
+    <h2>₹ {{ price }} / quintal</h2>
+    <h3>{{ trend }}</h3>
+
+    <br>
+
+    <a href="{{ url_for('dashboard') }}">
+        <button>🔙 Back to Dashboard</button>
+    </a>
+
+</div>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Result</title>
+    <style>
+        body {
+            font-family: Arial;
+            text-align: center;
+            background-color: #f4f7f6;
+        }
+
+        .card {
+            background: white;
+            padding: 20px;
+            margin: 50px auto;
+            width: 420px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        img {
+            border-radius: 10px;
+            margin-top: 10px;
+        }
+
+        .healthy {
+            color: green;
+        }
+
+        .disease {
+            color: red;
+        }
+
+        a {
+            text-decoration: none;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <h2>🌿 Disease Prediction</h2>
+
+    <img src="{{ image }}" width="250">
+
+    <h3 class="{% if 'healthy' in result.lower() %}healthy{% else %}disease{% endif %}">
+        {{ display_name }}
+    </h3>
+
+    <p><b>Confidence:</b> {{ confidence }}%</p>
+
+    <h3>Treatment Recommendation:</h3>
+    <p>
+        {{ treatment }}
+    </p>
+
+    <br><br>
+
+    <a href="/disease">⬅️ Upload Another Image</a>
+</div>
+
+</body>
+</html>

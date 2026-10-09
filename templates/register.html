@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Register</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body class="register-bg">
+
+<h1>📝 AgroAI Register</h1>
+
+<div class="form-container">
+
+<form action="/register" method="post">
+
+    <input type="text" name="username" placeholder="Create Username" required><br>
+
+    <input type="password" name="password" placeholder="Create Password" required><br>
+
+    <button type="submit">Register</button>
+
+</form>
+
+<br>
+
+<a href="{{ url_for('login') }}">
+    Already have account? Login
+</a>
+
+</div>
+
+</body>
+</html>

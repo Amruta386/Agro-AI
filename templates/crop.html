@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Crop Recommendation</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body class="crop-bg">
+
+<h1>🌱 Crop Recommendation System</h1>
+
+<div class="form-container">
+
+<form action="/predict_crop" method="post">
+
+    Nitrogen: <input type="text" name="n"><br>
+    Phosphorus: <input type="text" name="p"><br>
+    Potassium: <input type="text" name="k"><br>
+    Temperature: <input type="text" name="temp"><br>
+    Humidity: <input type="text" name="hum"><br>
+    pH: <input type="text" name="ph"><br>
+    Rainfall: <input type="text" name="rain"><br><br>
+
+    <button type="submit">Predict</button>
+
+</form>
+
+<br>
+
+<a href="{{ url_for('dashboard') }}">
+    <button>🔙 Back to Dashboard</button>
+</a>
+
+</div>
+
+</body>
+</html>

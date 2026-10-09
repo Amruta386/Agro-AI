@@ -1,0 +1,105 @@
+[
+    {
+        "order_id": 1,
+        "items": [
+            {
+                "name": "maize",
+                "price": "3000",
+                "quantity": 2
+            },
+            {
+                "name": "maize",
+                "price": "3000",
+                "quantity": 1
+            },
+            {
+                "name": "maize",
+                "price": "3000",
+                "quantity": 2
+            },
+            {
+                "name": "maize",
+                "price": "3000",
+                "quantity": 1
+            }
+        ],
+        "total_price": 18000,
+        "payment_method": "Cash on Delivery"
+    },
+    {
+        "order_id": 2,
+        "items": [
+            {
+                "name": "maize",
+                "price": "3000",
+                "quantity": 2
+            },
+            {
+                "name": "maize",
+                "price": "3000",
+                "quantity": 1
+            },
+            {
+                "name": "maize",
+                "price": "3000",
+                "quantity": 2
+            },
+            {
+                "name": "maize",
+                "price": "3000",
+                "quantity": 1
+            },
+            {
+                "name": "maize",
+                "price": "3000",
+                "quantity": 1
+            }
+        ],
+        "total_price": 21000,
+        "payment_method": "Cash on Delivery"
+    },
+    {
+        "order_id": 3,
+        "username": "dhanamma@gmail.com",
+        "items": [
+            {
+                "name": "maize",
+                "price": "3000",
+                "quantity": 1
+            }
+        ],
+        "total_price": 3000,
+        "payment_method": "Cash on Delivery"
+    },
+    {
+        "order_id": 4,
+        "username": "dhanamma@gmail.com",
+        "items": [
+            {
+                "name": "maize",
+                "price": "20",
+                "quantity": 1
+            }
+        ],
+        "total_price": 20,
+        "payment_method": "Cash on Delivery"
+    },
+    {
+        "order_id": 5,
+        "username": "dhanamma@gmail.com",
+        "items": [
+            {
+                "name": "maize",
+                "price": "20",
+                "quantity": 1
+            },
+            {
+                "name": "wheat",
+                "price": "5000",
+                "quantity": 1
+            }
+        ],
+        "total_price": 5020,
+        "payment_method": "Cash on Delivery"
+    }
+]

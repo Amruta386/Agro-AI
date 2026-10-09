@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Add Product - AgroAI</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f1f8e9;
+            min-height: 100vh;
+        }
+
+        .navbar {
+            background: #2e7d32;
+            color: white;
+            padding: 18px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+
+        .back-btn {
+            text-decoration: none;
+            color: white;
+            background: #1b5e20;
+            padding: 10px 18px;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        .back-btn:hover {
+            background: #145a18;
+        }
+
+        .page-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: calc(100vh - 75px);
+            padding: 30px 20px;
+        }
+
+        .form-card {
+            width: 100%;
+            max-width: 500px;
+            background: white;
+            padding: 35px;
+            border-radius: 18px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.12);
+        }
+
+        .form-card h2 {
+            margin-top: 0;
+            margin-bottom: 8px;
+            color: #2e7d32;
+            text-align: center;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 13px;
+            border: 1px solid #ccc;
+            border-radius: 9px;
+            font-size: 15px;
+            outline: none;
+        }
+
+        .form-group input:focus {
+            border-color: #2e7d32;
+            box-shadow: 0 0 5px rgba(46, 125, 50, 0.2);
+        }
+
+        .add-btn {
+            width: 100%;
+            padding: 14px;
+            background: #2e7d32;
+            color: white;
+            border: none;
+            border-radius: 9px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 5px;
+        }
+
+        .add-btn:hover {
+            background: #1b5e20;
+        }
+
+        .cancel-btn {
+            display: block;
+            text-align: center;
+            margin-top: 15px;
+            padding: 13px;
+            border: 1px solid #2e7d32;
+            color: #2e7d32;
+            text-decoration: none;
+            border-radius: 9px;
+            font-weight: bold;
+        }
+
+        .cancel-btn:hover {
+            background: #f1f8e9;
+        }
+
+        .icon {
+            font-size: 45px;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        @media (max-width: 600px) {
+
+            .navbar {
+                padding: 15px;
+            }
+
+            .navbar h1 {
+                font-size: 19px;
+            }
+
+            .form-card {
+                padding: 25px 20px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <div class="navbar">
+
+        <h1>🌿 AgroAI Admin</h1>
+
+        <a href="{{ url_for('farmer_dashboard') }}" class="back-btn">
+            ← Back
+        </a>
+
+    </div>
+
+
+    <div class="page-container">
+
+        <div class="form-card">
+
+            <div class="icon">
+                🌾
+            </div>
+
+            <h2>Add New Product</h2>
+
+            <p class="subtitle">
+                Add a crop to the Agro Marketplace
+            </p>
+
+
+            <form method="POST">
+
+                <div class="form-group">
+
+                    <label for="name">
+                        Crop Name
+                    </label>
+
+                    <input
+                        type="text"
+                        id="name"
+                        name="name"
+                        placeholder="Enter crop name"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="price">
+                        Price
+                    </label>
+
+                    <input
+                        type="number"
+                        id="price"
+                        name="price"
+                        placeholder="Enter price"
+                        min="1"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="quantity">
+                        Available Quantity
+                    </label>
+
+                    <input
+                        type="text"
+                        id="quantity"
+                        name="quantity"
+                        placeholder="Example: 50 kg"
+                        required
+                    >
+
+                </div>
+
+
+                <button type="submit" class="add-btn">
+                    ➕ Add Product
+                </button>
+
+            </form>
+
+
+            <a
+                href="{{ url_for('farmer_dashboard') }}"
+                class="cancel-btn"
+            >
+                Cancel
+            </a>
+
+        </div>
+
+    </div>
+
+</body>
+
+</html>

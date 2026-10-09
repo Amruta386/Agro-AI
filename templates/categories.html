@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Categories - Agro Marketplace</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f5f7f5;
+            padding-bottom: 80px;
+        }
+
+        .header {
+            background: #2e7d32;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .header h2 {
+            margin: 0;
+        }
+
+        .categories {
+            display: flex;
+            gap: 10px;
+            padding: 15px;
+            overflow-x: auto;
+            background: white;
+        }
+
+        .category {
+            min-width: 100px;
+            padding: 12px;
+            border-radius: 10px;
+            background: #e8f5e9;
+            text-align: center;
+            text-decoration: none;
+            color: #2e7d32;
+            font-weight: bold;
+        }
+
+        .category.active {
+            background: #2e7d32;
+            color: white;
+        }
+
+        .container {
+            padding: 15px;
+        }
+
+        .title {
+            margin-bottom: 15px;
+        }
+
+        .crop-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .crop-card {
+            background: white;
+            padding: 18px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .crop-card h3 {
+            margin-top: 0;
+            color: #2e7d32;
+        }
+
+        .price {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .stock {
+            color: #555;
+        }
+
+        .quantity {
+            width: 70px;
+            padding: 8px;
+            margin-top: 8px;
+        }
+
+        .cart-btn {
+            display: block;
+            margin-top: 10px;
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 8px;
+            background: #2e7d32;
+            color: white;
+            cursor: pointer;
+        }
+
+        .cart-btn:hover {
+            background: #1b5e20;
+        }
+
+        .empty {
+            text-align: center;
+            padding: 40px;
+            color: #777;
+        }
+
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 65px;
+            background: white;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.15);
+            z-index: 1000;
+        }
+
+        .bottom-nav a {
+            text-decoration: none;
+            color: #666;
+            text-align: center;
+            font-size: 13px;
+        }
+
+        .bottom-nav a.active {
+            color: #2e7d32;
+            font-weight: bold;
+        }
+
+        .nav-icon {
+            display: block;
+            font-size: 22px;
+            margin-bottom: 3px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="header">
+    <h2>Categories</h2>
+</div>
+
+<div class="categories">
+
+    <a href="{{ url_for('categories', category='All Crops') }}"
+       class="category {% if selected_category == 'All Crops' %}active{% endif %}">
+        🌱 All
+    </a>
+
+    <a href="{{ url_for('categories', category='Millets') }}"
+       class="category {% if selected_category == 'Millets' %}active{% endif %}">
+        🌾 Millets
+    </a>
+
+    <a href="{{ url_for('categories', category='Cereals') }}"
+       class="category {% if selected_category == 'Cereals' %}active{% endif %}">
+        🌾 Cereals
+    </a>
+
+    <a href="{{ url_for('categories', category='Pulses') }}"
+       class="category {% if selected_category == 'Pulses' %}active{% endif %}">
+        🫘 Pulses
+    </a>
+
+    <a href="{{ url_for('categories', category='Vegetables') }}"
+       class="category {% if selected_category == 'Vegetables' %}active{% endif %}">
+        🥕 Vegetables
+    </a>
+
+    <a href="{{ url_for('categories', category='Fruits') }}"
+       class="category {% if selected_category == 'Fruits' %}active{% endif %}">
+        🍎 Fruits
+    </a>
+
+</div>
+
+<div class="container">
+
+    <h3 class="title">
+        {{ selected_category }}
+    </h3>
+
+    {% if crops %}
+
+    <div class="crop-grid">
+
+        {% for crop in crops %}
+
+        <div class="crop-card">
+
+            <h3>{{ crop["name"] }}</h3>
+
+            <p class="price">
+                ₹{{ crop["price"] }}
+            </p>
+
+            <p class="stock">
+                Stock: {{ crop["quantity"] }}
+            </p>
+
+            <form action="{{ url_for('add_to_cart', index=loop.index0) }}"
+                  method="POST">
+
+                <input
+                    type="number"
+                    name="quantity"
+                    value="1"
+                    min="1"
+                    class="quantity"
+                    required
+                >
+
+                <button type="submit" class="cart-btn">
+                    Add to Cart
+                </button>
+
+            </form>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+    {% else %}
+
+    <div class="empty">
+        <h3>No crops available</h3>
+        <p>There are no crops in this category.</p>
+    </div>
+
+    {% endif %}
+
+</div>
+
+<div class="bottom-nav">
+
+    <a href="{{ url_for('marketplace') }}">
+        <span class="nav-icon">🏠</span>
+        Home
+    </a>
+
+    <a href="{{ url_for('categories') }}" class="active">
+        <span class="nav-icon">📂</span>
+        Categories
+    </a>
+
+    <a href="{{ url_for('view_cart') }}">
+        <span class="nav-icon">🛒</span>
+        Cart
+    </a>
+
+    <a href="{{ url_for('account') }}">
+        <span class="nav-icon">👤</span>
+        Account
+    </a>
+
+</div>
+
+</body>
+</html>

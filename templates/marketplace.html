@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <title>Agro Marketplace</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f5f7f5;
+            padding-bottom: 80px;
+        }
+
+        /* HEADER */
+
+        .header {
+            background: #2e7d32;
+            color: white;
+            padding: 18px;
+            text-align: center;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+
+        /* SEARCH */
+
+        .search-container {
+            padding: 15px;
+            background: white;
+        }
+
+        .search-box {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid #ccc;
+            border-radius: 25px;
+            font-size: 16px;
+            outline: none;
+        }
+
+        .search-box:focus {
+            border-color: #2e7d32;
+        }
+
+        /* CONTENT */
+
+        .content {
+            padding: 15px;
+        }
+
+        .section-title {
+            font-size: 22px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        /* CROPS */
+
+        .crops-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 18px;
+        }
+
+        .crop-card {
+            background: white;
+            border-radius: 12px;
+            padding: 18px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+        }
+
+        .crop-card h3 {
+            margin-top: 0;
+            color: #2e7d32;
+            font-size: 20px;
+        }
+
+        .price {
+            font-size: 18px;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        .stock {
+            color: #555;
+            margin-bottom: 15px;
+        }
+
+        .quantity-label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: bold;
+        }
+
+        .quantity-input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            margin-bottom: 12px;
+        }
+
+        .cart-button {
+            width: 100%;
+            padding: 12px;
+            background: #2e7d32;
+            color: white;
+            border: none;
+            border-radius: 7px;
+            cursor: pointer;
+            font-size: 15px;
+        }
+
+        .cart-button:hover {
+            background: #256628;
+        }
+
+        /* NO CROPS */
+
+        .no-crops {
+            text-align: center;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+        }
+
+        /* BOTTOM NAVIGATION */
+
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 70px;
+            background: white;
+            border-top: 1px solid #ddd;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.08);
+            z-index: 1000;
+        }
+
+        .nav-item {
+            text-decoration: none;
+            color: #555;
+            text-align: center;
+            font-size: 13px;
+        }
+
+        .nav-icon {
+            display: block;
+            font-size: 22px;
+            margin-bottom: 3px;
+        }
+
+        .nav-item.active {
+            color: #2e7d32;
+            font-weight: bold;
+        }
+
+        @media (max-width: 600px) {
+
+            .header h1 {
+                font-size: 20px;
+            }
+
+            .crops-container {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <!-- HEADER -->
+
+    <div class="header">
+
+        <h1>🌱 Agro Marketplace</h1>
+
+    </div>
+
+
+    <!-- SEARCH -->
+
+    <div class="search-container">
+
+        <input
+            type="text"
+            id="searchInput"
+            class="search-box"
+            placeholder="🔍 Search crops like maize, millet, rice..."
+            onkeyup="searchCrops()"
+        >
+
+    </div>
+
+
+    <!-- CONTENT -->
+
+    <div class="content">
+
+        <div class="section-title">
+            Available Crops
+        </div>
+
+
+        {% if crops %}
+
+        <div class="crops-container" id="cropsContainer">
+
+            {% for crop in crops %}
+
+            <div
+                class="crop-card"
+                data-name="{{ crop['name']|lower }}"
+            >
+
+                <h3>
+                    🌾 {{ crop["name"] }}
+                </h3>
+
+                <div class="price">
+                    ₹{{ crop["price"] }}
+                </div>
+
+                <div class="stock">
+                    Available Stock:
+                    {{ crop["quantity"] }}
+                </div>
+
+
+                <form
+                    action="{{ url_for('add_to_cart', index=loop.index0) }}"
+                    method="POST"
+                >
+
+                    <label class="quantity-label">
+                        Quantity
+                    </label>
+
+                    <input
+                        type="number"
+                        name="quantity"
+                        class="quantity-input"
+                        min="1"
+                        value="1"
+                        required
+                    >
+
+                    <button
+                        type="submit"
+                        class="cart-button"
+                    >
+                        🛒 Add to Cart
+                    </button>
+
+                </form>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+        {% else %}
+
+        <div class="no-crops">
+
+            <h3>No crops available</h3>
+
+            <p>Please check again later.</p>
+
+        </div>
+
+        {% endif %}
+
+    </div>
+
+
+    <!-- BOTTOM NAVIGATION -->
+
+    <div class="bottom-nav">
+
+        <a
+            href="{{ url_for('marketplace') }}"
+            class="nav-item active"
+        >
+            <span class="nav-icon">🏠</span>
+            Home
+        </a>
+
+
+        <a
+            href="{{ url_for('categories') }}">
+            class="nav-item"
+        >
+            <span class="nav-icon">🗂️</span>
+            Categories
+        </a>
+
+
+        <a
+            href="{{ url_for('view_cart') }}"
+            class="nav-item"
+        >
+            <span class="nav-icon">🛒</span>
+            Cart
+        </a>
+
+
+        <a
+            href="{{ url_for('account') }}"
+            class="nav-item"
+>
+        >
+            <span class="nav-icon">👤</span>
+            Account
+        </a>
+
+    </div>
+
+
+    <!-- SEARCH JAVASCRIPT -->
+
+    <script>
+
+        function searchCrops() {
+
+            let input =
+                document.getElementById("searchInput")
+                .value
+                .toLowerCase();
+
+            let cards =
+                document.querySelectorAll(".crop-card");
+
+            cards.forEach(function(card) {
+
+                let cropName =
+                    card.getAttribute("data-name");
+
+                if (cropName.includes(input)) {
+
+                    card.style.display = "block";
+
+                } else {
+
+                    card.style.display = "none";
+
+                }
+
+            });
+
+        }
+
+    </script>
+
+</body>
+</html>

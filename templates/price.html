@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Price Prediction</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body class="price-bg">
+
+<h1>📈 Crop Market Price Prediction</h1>
+
+<div class="form-container">
+
+<form action="/predict_price" method="post">
+
+    <select name="crop">
+        <option>rice</option>
+        <option>wheat</option>
+        <option>maize</option>
+    </select><br>
+
+    <input type="number" name="month" placeholder="Month (1-12)" required><br>
+
+    <input type="text" name="market" placeholder="Market Name" required><br>
+
+    <button type="submit">Predict Price</button>
+
+</form>
+
+<br>
+
+<a href="{{ url_for('dashboard') }}">
+    <button>🔙 Back to Dashboard</button>
+</a>
+
+</div>
+
+</body>
+</html>
